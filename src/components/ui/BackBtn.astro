@@ -1,0 +1,35 @@
+---
+interface Props {
+    text: string;
+    href: string;
+}
+
+const { text, href } = Astro.props;
+---
+
+<a
+    aria-label='Go to all projects'
+    href={href}
+    class='-mt-14 flex flex-col items-start justify-center border-gray-700 stroke-gray-600 py-2 text-gray-700 duration-200 hover:border-black hover:text-black hover:transition-all active:bg-red-600 md:mb-8 lg:fixed lg:left-14 lg:mb-12 lg:mt-0 lg:items-center xl:left-36'
+>
+    <div
+        class='mb-2 flex h-10 w-10 items-center justify-center rounded-full border border-inherit text-inherit md:mb-8 lg:mb-2'
+    >
+        <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='48'
+            height='48'
+            viewBox='0 0 24 24'
+            fill='none'
+            stroke='currentColor'
+            stroke-width='2'
+            stroke-linecap='round'
+            stroke-linejoin='round'
+            class='lucide lucide-arrow-left h-8 w-8 duration-100 hover:stroke-black hover:transition-all'
+            ><path d='m12 19-7-7 7-7'></path><path d='M19 12H5'></path></svg
+        >
+    </div>
+    <p class='font-mono text-xs uppercase'>
+        {text}
+    </p>
+</a>

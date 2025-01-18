@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import CardTitle from '@components/ui/CardTitle.astro';
+import ProjectPreview from '@components/ProjectPreview.astro';
+import LinkBtn from '@components/ui/LinkBtn.astro';
+
+const featuredProjects = (await getCollection('projects')).filter(
+    ({ data }) => data.isFeatured
+);
+---
+
+<div
+    class='group relative aspect-square h-fit w-full overflow-hidden rounded-md bg-gradient-to-r from-[#c2b58b] to-[#ebb06d] text-ij-red md:col-start-3 md:row-span-2 md:h-full'
+>
+    <div
+        class='absolute inset-0 z-10 flex h-full flex-col items-start justify-start overflow-auto px-10 py-8 md:px-4'
+    >
+        <CardTitle className='pb-4'> Works & Experience </CardTitle>
+        <ul class='w-full'>
+            {
+                !featuredProjects || featuredProjects.length === 0 ? (
+                    <li class='text-center'>No projects found</li>
+                ) : (
+                    featuredProjects.map((project) => (
+                        <ProjectPreview project={project} />
+                    ))
+                )
+            }
+        </ul>
+
+        <div class='mt-auto flex gap-2'>
+            <LinkBtn
+                classText='md:text-xs sm:text-sm'
+                href={`/`}
+                text='Read CV'
+                ariaLabel='read online'
+            />
+            <LinkBtn
+                classText='md:text-xs sm:text-sm'
+                href={`/`}
+                text='Download CV'
+                ariaLabel='ir a la descarga'
+            />
+        </div>
+    </div>
+</div>

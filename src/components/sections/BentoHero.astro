@@ -1,0 +1,16 @@
+---
+import Darayaq from '@components/bentoCards/Darayaq.astro';
+import LastWorks from '@components/bentoCards/LastWorks.astro';
+import Contact from '@components/bentoCards/Contact.astro';
+import Container from '@components/Container.astro';
+---
+
+<Container>
+    <section
+        class='grid grid-cols-1 gap-4 md:grid-cols-3 md:grid-rows-[auto_1fr] md:p-0'
+    >
+        <Darayaq />
+        <LastWorks />
+        <Contact />
+    </section>
+</Container>

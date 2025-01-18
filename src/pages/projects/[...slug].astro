@@ -1,0 +1,70 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import LayoutProject from '@layouts/LayoutProject.astro';
+import CardTitle from '@components/ui/CardTitle.astro';
+import Subtitle from '@components/ui/Subtitle.astro';
+
+export async function getStaticPaths() {
+    const allProjects = await getCollection('projects');
+    return allProjects.map((project) => ({
+        params: { slug: project.id },
+        props: project,
+    }));
+}
+type Props = CollectionEntry<'projects'>;
+
+const project = Astro.props;
+if (!project) {
+    return Astro.redirect('/404');
+}
+const { data } = project;
+if (!data) {
+    return Astro.redirect('/404');
+}
+const { title, date, tags, description, imageFront, link, textLink } = data;
+console.log({ description });
+export const prerender = true;
+const { Content } = await render(project);
+---
+
+<LayoutProject title={title} description=`portfolio project ${title}`>
+    <header>
+        <p><span class='font-bolder text-xl'>&#9002;</span> {date}</p>
+        <CardTitle>{title}</CardTitle>
+        <div class='my-4 inline-flex gap-2'>
+            {
+                tags?.map((tag: string) => (
+                    <span class='text-balance rounded-md px-2 py-1 text-center font-mono text-xs font-light text-white outline-dashed outline-1'>
+                        {tag}
+                    </span>
+                ))
+            }
+        </div>
+    </header>
+    <div class='my-6 h-fit w-fit border-4 border-yellow-400'>
+        {
+            !imageFront ||
+                (imageFront && (
+                    <Image
+                        src={imageFront}
+                        alt={title}
+                        class='self-center object-cover'
+                    />
+                ))
+        }
+    </div>
+
+    <div class='prose mb-6 mt-2'>
+        <p>
+            Link to the project: <a href={link} class='underline'>{textLink}</a>
+        </p>
+    </div>
+
+    <Subtitle className='prose text-balance pb-0'>{description}</Subtitle>
+
+    <div class='prose'>
+        <Content />
+    </div>
+</LayoutProject>

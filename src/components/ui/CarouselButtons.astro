@@ -1,0 +1,27 @@
+---
+import Icon from '@components/ui/Icon.astro';
+
+interface Props {
+    class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['items-center gap-x-4 md:flex', className]}>
+    <button
+        class='rounded-full bg-[#E2E2E5] p-1 text-[#636365] opacity-45 transition-all enabled:hover:scale-110 enabled:active:scale-100'
+        id='left-button'
+        disabled='true'
+        aria-label='Back'
+    >
+        <Icon name='leftarrow' />
+    </button>
+    <button
+        class='rounded-full bg-[#E2E2E5] p-1 text-[#636365] transition-all enabled:hover:scale-110 enabled:active:scale-100'
+        id='right-button'
+        aria-label='Next'
+    >
+        <Icon name='rightarrow' />
+    </button>
+</div>

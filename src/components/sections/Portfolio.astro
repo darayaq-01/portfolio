@@ -1,0 +1,109 @@
+---
+import { getCollection } from 'astro:content';
+
+import ProjectCard from '@components/ProjectCard.astro';
+import CarouselButtons from '@components/ui/CarouselButtons.astro';
+import CardTitle from '@components/ui/CardTitle.astro';
+import Container from '@components/Container.astro';
+import LinkBtn from '@components/ui/LinkBtn.astro';
+
+const getProjects = await getCollection('projects');
+const allProjects = getProjects.filter((project) => project.data.pub === true);
+---
+
+<Container>
+    <div
+        class='relative aspect-square h-full w-full content-center overflow-hidden rounded-md border-none bg-gradient-to-r from-[#fef6db] to-[#fce197] px-8 text-ij-yellow sm:aspect-auto sm:py-6 md:col-span-2 md:aspect-video'
+    >
+        <div class='flex items-center justify-between pb-6 md:pb-12'>
+            <CardTitle className='pb-3 '>Projects</CardTitle>
+            <CarouselButtons />
+        </div>
+
+        <div
+            class='carousel-container relative -mr-4 pr-4 md:mr-0 md:pr-0'
+            id='carousel-container'
+            style='--left-opacity: 0; --right-opacity: 1;'
+        >
+            <div
+                class='custom-scrollbar -mr-4 flex snap-x snap-mandatory gap-x-4 overflow-scroll pr-4 sm:h-full md:mr-0 md:gap-x-8 md:pr-0'
+                id='carousel'
+            >
+                {
+                    allProjects.length === 0 ? (
+                        <p class='text-center'>No projects found</p>
+                    ) : (
+                        allProjects.map((project) => (
+                            <ProjectCard
+                                project={project}
+                                className='md:aspect-video'
+                                imageClass='hover:scale-90'
+                            >
+                                <div class='absolute inset-0 hover:backdrop-sepia' />
+                            </ProjectCard>
+                        ))
+                    )
+                }
+            </div>
+        </div>
+        <div class='mx-auto mt-8 flex gap-2'>
+            <LinkBtn
+                href={`/projects`}
+                text='See all projects'
+                ariaLabel='read online'
+            />
+        </div>
+    </div>
+</Container>
+
+<script>
+    import { getCarouselElements, initializeCarousel } from '@lib/carousel';
+    document.addEventListener('DOMContentLoaded', () => {
+        const elements = getCarouselElements();
+        if (elements) {
+            initializeCarousel(elements);
+        }
+    });
+</script>
+
+<style>
+    .custom-scrollbar {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .carousel-container::before,
+    .carousel-container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100px;
+        pointer-events: none;
+        z-index: 10;
+    }
+
+    .carousel-container::before {
+        left: 0;
+        background: linear-gradient(
+            to right,
+            rgba(254, 246, 219, 1),
+            transparent
+        );
+        opacity: var(--left-opacity);
+    }
+
+    .carousel-container::after {
+        right: 0;
+        background: linear-gradient(
+            to left,
+            rgba(254, 246, 219, 1),
+            transparent
+        );
+        opacity: var(--right-opacity);
+    }
+</style>

@@ -1,0 +1,36 @@
+---
+interface Props {
+    href: string;
+    text: string;
+    classBtn?: string;
+    classText?: string;
+    ariaLabel?: string;
+    target?: string;
+}
+
+const {
+    href,
+    text,
+    classBtn,
+    classText,
+    ariaLabel,
+    target = '_self',
+} = Astro.props;
+---
+
+<a
+    href={href}
+    aria-label={ariaLabel}
+    target={target}
+    rel='noopener noreferrer'
+    class:list={[
+        'flex w-fit rounded-md border border-current px-3 py-2 opacity-90 hover:border-transparent hover:bg-[#8C7D4F] hover:transition-all',
+        classBtn,
+    ]}
+>
+    <span
+        class:list={['text-balance text-center text-xs font-bold ', classText]}
+    >
+        {text}
+    </span>
+</a>

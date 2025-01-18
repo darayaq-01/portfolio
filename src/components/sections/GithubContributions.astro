@@ -1,0 +1,46 @@
+---
+import { fetchContributions } from '@utils/functions';
+import Container from '@components/Container.astro';
+
+const username = 'darayaq-01';
+const contributions = await fetchContributions(username);
+
+const levelColors = {
+    0: 'bg-[#ebedf0]',
+    1: 'bg-[#9be9a8]',
+    2: 'bg-[#40c463]',
+    3: 'bg-[#30a14e]',
+    4: 'bg-[#216e39]',
+};
+
+const dayToRowStart = {
+    Mon: 'row-start-1',
+    Tue: 'row-start-2',
+    Wed: 'row-start-3',
+    Thu: 'row-start-4',
+    Fri: 'row-start-5',
+    Sat: 'row-start-6',
+    Sun: 'row-start-7',
+};
+---
+
+<Container>
+    <div class='grid grid-flow-col grid-rows-7 gap-1 overflow-auto'>
+        {
+            contributions.map(
+                (day: {
+                    level: 0 | 1 | 2 | 3 | 4;
+                    date: string;
+                    count: number;
+                    weekday: keyof typeof dayToRowStart;
+                    dayToStart: number;
+                }) => (
+                    <div
+                        class={`h-4 w-4 ${levelColors[day.level]} ${dayToRowStart[day.weekday]}`}
+                        title={`Date: ${day.date}, Contributions: ${day.count}, Day: ${day.weekday}`}
+                    />
+                )
+            )
+        }
+    </div>
+</Container>

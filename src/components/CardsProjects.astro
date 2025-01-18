@@ -1,0 +1,58 @@
+---
+// TODO: a lot to do:
+// - improve styles
+// footer on the bottom
+import { Image } from 'astro:assets';
+const { project } = Astro.props;
+
+const innerlink = project.id;
+const { title, description, imageFront } = project.data;
+console.log({ title, description, imageFront });
+
+// TODO: delete this
+---
+
+<article
+    class='border-light-600/70 bg-light-600/20 hover:bg-light-600/70 row-span-2 grid grid-rows-subgrid gap-5 rounded-md border p-3 shadow-sm transition-colors duration-300 ease-in-out dark:border-neutral-800/70 dark:bg-[#101010] dark:hover:bg-[#191919]'
+>
+    <div class='flex flex-col gap-3'>
+        <div
+            class='relative h-[160px] w-full overflow-hidden rounded-md border'
+        >
+            <Image
+                class='h-full w-full rounded-md border border-transparent object-cover'
+                src={imageFront}
+                alt={title}
+            />
+        </div>
+        <div class='flex flex-col gap-2'>
+            <h2 class='text-balance text-base font-semibold md:text-lg'>
+                {title}
+            </h2><p
+                class='dark:text-link line-clamp-4 text-pretty text-sm text-gray-700'
+            >
+                deededed {description}
+            </p>
+        </div>
+    </div>
+    <div class='flex justify-between'>
+        <a
+            class='dark:text-anchor resource-item group flex items-center gap-1 text-sm text-blue-700 underline-offset-2 transition-colors duration-300 ease-in-out hover:underline'
+            href={innerlink}
+            rel='noopener noreferrer'
+            ><span>View project</span><svg
+                xmlns='http://www.w3.org/2000/svg'
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                stroke-width='2'
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                class='lucide lucide-arrow-up-right size-4 duration-200 group-hover:translate-x-[1.5px] group-hover:opacity-100'
+                ><path d='M7 7h10v10'></path><path d='M7 17 17 7'></path></svg
+            ></a
+        >
+    </div>
+</article>

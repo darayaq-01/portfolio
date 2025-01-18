@@ -1,0 +1,57 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
+import { getCollection } from 'astro:content';
+import Layout from '@layouts/Layout.astro';
+import Container from '@components/Container.astro';
+import CardTitle from '@components/ui/CardTitle.astro';
+import ProjectCard from '@components/ProjectCard.astro';
+
+const allProjects = await getCollection('projects');
+
+// This is the page for All Projects
+---
+
+<!doctype html>
+<html lang='en'>
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </head>
+    <body>
+        <Layout
+            title='DarayaQ | Web Developer'
+            description='Daniel Araya - Web Developer'
+        >
+            <Container>
+                <div
+                    class='h-full w-full overflow-hidden rounded-md border-none bg-gradient-to-r from-[#fef6db] to-[#fce197] px-8 py-6 text-ij-yellow md:py-8'
+                >
+                    <CardTitle className='pb-6 '>All my Projects</CardTitle>
+
+                    <div class='grid gap-4 md:h-auto md:grid-cols-3'>
+                        {
+                            !allProjects ||
+                                (allProjects.length &&
+                                    allProjects.map((project) => (
+                                        <ProjectCard
+                                            project={project}
+                                            className='w-full aspect-none content-start overflow-auto px-0 pt-0 '
+                                            imageClass='object-cover group-hover:scale-95 rounded-t-md w-full'
+                                            classTitleGrey='top-0 md:py-1 h-fit '
+                                        >
+                                            <div class='absolute inset-0 group-hover:backdrop-sepia' />
+                                            {/* TODO: check if make sense in terms of design */}
+                                            {/* 
+                                            <p class='text-balance px-2 py-2 text-base group-hover:bg-white/30 group-hover:backdrop-sepia'>
+                                                {project.data.description}
+                                            </p> 
+                                            */}
+                                        </ProjectCard>
+                                    )))
+                        }
+                    </div>
+                </div>
+            </Container>
+        </Layout>
+    </body>
+</html>

@@ -1,0 +1,38 @@
+---
+import { Image } from 'astro:assets';
+
+const { project, className, imageClass, classTitleGrey } = Astro.props;
+const { title, imageFront } = project.data;
+---
+
+<a
+    class:list={[
+        'aspect-auto h-fit w-4/6 rounded-md overflow-hidden relative group snap-center bg-[rgb(242, 229, 156)]/60 outline outline-2 shadow-sm shrink-0 cursor-pointer content-center drop-shadow-xl px-2 pt-2',
+        className,
+    ]}
+    data-content-id={project.id}
+    href={`/projects/${project.id}/`}
+>
+    <Image
+        src={imageFront}
+        alt={title}
+        class:list={[
+            'transition-transform duration-300 ease-in-out object-contain justify-center align-middle overflow-hidden ',
+            imageClass,
+        ]}
+    />
+
+    <div
+        class:list={[
+            'absolute inset-x-0 bottom-4 z-10 w-full bg-gray-600/60 px-4 py-1 md:bottom-8 md:py-2',
+            classTitleGrey,
+        ]}
+    >
+        <span
+            class='text-balance pr-3 text-left text-sm font-medium tracking-separated md:max-w-64 md:text-xl'
+        >
+            {title}
+        </span>
+    </div>
+    <slot />
+</a>

@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import { getProjectImages } from '../consts';
+
+const { title, projectName } = Astro.props.frontmatter;
+// console.log({ title, projectName });
+const portfolioImages = getProjectImages(projectName);
+---
+
+<html lang='en'>
+    <head>
+        <meta charset='utf-8' />
+        <title>{title}</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
+    </head>
+    <body>
+        <main>
+            <article>
+                <slot />
+                {
+                    portfolioImages.length === 0 ? (
+                        <p>No images in {projectName}.</p>
+                    ) : (
+                        <div class='columns-1 gap-2 sm:m-0 sm:columns-2 lg:columns-3'>
+                            {portfolioImages.map((image) => (
+                                <figure class='mb-3 mt-0 break-inside-avoid border-4 border-yellow-400 sm:mt-0'>
+                                    <Image
+                                        src={image.src}
+                                        alt={image.alt}
+                                        class='h-auto w-full object-cover'
+                                    />
+                                </figure>
+                            ))}
+                        </div>
+                    )
+                }
+            </article>
+        </main>
+    </body>
+</html>
