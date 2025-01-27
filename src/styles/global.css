@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-d-red: #FF421C;
+  --color-d-blue: #E8F2F8;
+  --color-d-yellow: #EFA500;
+}
