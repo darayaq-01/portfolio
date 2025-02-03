@@ -13,9 +13,9 @@ const shuffledProjects = allProjects.sort(() => Math.random() - 0.5);
     <div
         class='text-d-yellow h-full w-full overflow-hidden rounded-md border-none bg-gradient-to-r from-[#fef6db] to-[#fce197] px-8 py-6 md:py-8'
     >
-        <CardTitle className='pb-6'>All my Projects</CardTitle>
+        <CardTitle className='pb-6'>Projects</CardTitle>
 
-        <div id='masonry-grid' class='masonry-grid'>
+        <div id='projects' class='masonry-grid'>
             {
                 shuffledProjects.map((project, index) => (
                     <ProjectCard
