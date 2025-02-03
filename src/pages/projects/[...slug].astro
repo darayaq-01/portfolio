@@ -25,7 +25,6 @@ if (!data) {
     return Astro.redirect('/404');
 }
 const { title, date, tags, description, imageFront, link, textLink } = data;
-// console.log({ description });
 export const prerender = true;
 const { Content } = await render(project);
 ---
