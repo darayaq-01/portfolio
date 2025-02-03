@@ -82,3 +82,72 @@ function formatDate(dateString: string): string {
   return `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
 }
 
+// Masonry Grid Functions
+
+export function resizeMasonryItem(item: HTMLElement) {
+  const grid = document.querySelector(".masonry-grid") as HTMLElement
+  const rowHeight = Number.parseInt(window.getComputedStyle(grid).getPropertyValue("grid-auto-rows"))
+  const rowGap = Number.parseInt(window.getComputedStyle(grid).getPropertyValue("grid-row-gap"))
+
+  const content = item.querySelector(".masonry-content") as HTMLElement
+  const rowSpan = Math.ceil((content.getBoundingClientRect().height + rowGap) / (rowHeight + rowGap))
+
+  item.style.gridRowEnd = `span ${rowSpan}`
+}
+
+export function resizeAllMasonryItems() {
+  const visibleItems = document.querySelectorAll(".masonry-item:not(.hidden)")
+  visibleItems.forEach((item) => resizeMasonryItem(item as HTMLElement))
+}
+
+export function handleIntersection(entries: IntersectionObserverEntry[], observer: IntersectionObserver) {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const lazyImage = entry.target.querySelector(".lazy-image") as HTMLImageElement
+      if (lazyImage && lazyImage.dataset.src) {
+        lazyImage.src = lazyImage.dataset.src
+        lazyImage.removeAttribute("data-src")
+        lazyImage.classList.remove("lazy-image")
+      }
+      resizeMasonryItem(entry.target as HTMLElement)
+      observer.unobserve(entry.target)
+    }
+  })
+}
+
+export function loadMoreItems(allItems: HTMLElement[], visibleItems: number, observer: IntersectionObserver) {
+  const windowWidth = window.innerWidth
+  let itemsToLoad = 3
+  if (windowWidth >= 1024) {
+    itemsToLoad = 12 - visibleItems
+  } else if (windowWidth >= 768) {
+    itemsToLoad = 9 - visibleItems
+  } else {
+    itemsToLoad = 3
+  }
+
+  const hiddenItems = allItems.slice(visibleItems, visibleItems + itemsToLoad)
+  hiddenItems.forEach((item) => {
+    item.classList.remove("hidden")
+    observer.observe(item)
+  })
+
+  const newVisibleItems = visibleItems + itemsToLoad
+
+  resizeAllMasonryItems()
+
+  return newVisibleItems
+}
+
+export function showLessItems(allItems: HTMLElement[], currentVisibleItems: number) {
+  allItems.forEach((item, index) => {
+    if (index >= 3) {
+      item.classList.add("hidden");
+    }
+  });
+
+  resizeAllMasonryItems()
+
+  return 3
+}
+
