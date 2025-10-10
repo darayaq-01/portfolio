@@ -17,16 +17,20 @@ const shuffledProjects = allProjects.sort(() => Math.random() - 0.5);
 
         <div id='projects' class='masonry-grid'>
             {
-                shuffledProjects.map((project, index) => (
-                    <ProjectCard
-                        project={project}
-                        className={`masonry-item ${index >= 3 ? 'hidden' : ''}`}
-                        imageClass='object-cover group-hover:scale-95 rounded-t-md w-full aspect-auto lazy-image'
-                        classTitleGrey='bottom-0 py-1 h-fit'
-                    >
-                        <div class='absolute inset-0 group-hover:backdrop-sepia' />
-                    </ProjectCard>
-                ))
+                shuffledProjects.map((project, index) => {
+                    if (project.data.isFeatured) {
+                        return (
+                            <ProjectCard
+                                project={project}
+                                className='masonry-item'
+                                imageClass='object-cover group-hover:scale-95 rounded-t-md w-full aspect-auto lazy-image'
+                                classTitleGrey='bottom-0 py-1 h-fit'
+                            >
+                                <div class='absolute inset-0 group-hover:backdrop-sepia' />
+                            </ProjectCard>
+                        );
+                    }
+                })
             }
         </div>
         {

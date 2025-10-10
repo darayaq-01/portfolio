@@ -6,6 +6,7 @@ interface Props {
     classText?: string;
     ariaLabel?: string;
     target?: string;
+    docDownload?: string;
 }
 
 const {
@@ -14,6 +15,7 @@ const {
     classBtn,
     classText,
     ariaLabel,
+    docDownload,
     target = '_self',
 } = Astro.props;
 ---
@@ -23,6 +25,7 @@ const {
     aria-label={ariaLabel}
     target={target}
     rel='noopener noreferrer'
+    download={docDownload}
     class:list={[
         'flex w-fit rounded-md border border-current px-3 py-2 opacity-90 hover:border-transparent hover:bg-[#8C7D4F] hover:transition-all',
         classBtn,
