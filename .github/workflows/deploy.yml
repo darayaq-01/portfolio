@@ -13,20 +13,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22  # o la versión que uses en tu proyecto
+
       - name: Install pnpm
-        run: pnpm install -g pnpm
+        run: npm install -g pnpm
 
       - name: Install dependencies
-        run:  pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build Astro site
-        run: npm run build
+        run: pnpm run build
 
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.6 
+      - name: Deploy to OVH via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: dist
-          server-dir: www/  # folder where is the site on the server
+          server-dir: www/  # folder where your site files go
