@@ -23,5 +23,3 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# lock file
-pmpm-lock.yaml
