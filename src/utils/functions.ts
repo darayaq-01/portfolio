@@ -1,5 +1,5 @@
 export async function fetchContributions(username: string) {
-  const TOKEN = import.meta.env.TOKEN_GITHUB;
+  const TOKEN = import.meta.env.PUBLIC_TOKEN_GITHUB;
 
   // Calculate dates for the query
   const endDate = new Date();

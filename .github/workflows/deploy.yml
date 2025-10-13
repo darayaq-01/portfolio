@@ -27,7 +27,7 @@ jobs:
       - name: Build Astro site
         run: pnpm run build
         env:
-          TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+          TOKEN_GITHUB: ${{ secrets.PUBLIC_TOKEN_GITHUB }}
 
       - name: Deploy to OVH via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
