@@ -9,4 +9,7 @@ export default defineConfig({
     site: 'https://darayaq.de',
     vite: {    plugins: [tailwindcss()],  },
     integrations: [mdx(), sitemap(), ],
+    experimental: {
+        staticImportMetaEnv: true,
+    }
 });
