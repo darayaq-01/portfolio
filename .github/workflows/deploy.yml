@@ -3,62 +3,43 @@ name: Deploy to OVH via FTP
 on:
   push:
     branches:
-      - main
+      - main  # branch in production
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
+    env:
+      PUBLIC_TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-      
+          node-version: 22  # o la versión que uses en tu proyecto
+
       - name: Install pnpm
         run: npm install -g pnpm
-      
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
-      # Crear .env con el token
-      - name: Create .env file
-        run: |
-          echo "PUBLIC_TOKEN_GITHUB=${{ secrets.PUBLIC_TOKEN_GITHUB }}" > .env
-      
-      # Verificar que el token existe (mostrará solo los primeros caracteres)
-      - name: Verify token exists
-        run: |
-          if [ -z "${{ secrets.PUBLIC_TOKEN_GITHUB }}" ]; then
-            echo "❌ TOKEN IS EMPTY"
-            exit 1
-          else
-            echo "✅ Token exists (length: ${#{{ secrets.PUBLIC_TOKEN_GITHUB }}})"
-          fi
-      
-      # Verificar que se lee desde .env
-      - name: Check .env file
-        run: |
-          if [ -f .env ]; then
-            echo "✅ .env file exists"
-            # Mostrar solo primeros 10 caracteres por seguridad
-            head -c 10 .env
-            echo "..."
-          else
-            echo "❌ .env file not found"
-          fi
-      
+
+      - name: Check environment variable (debug)
+        run: echo "TOKEN_GITHUB = $TOKEN_GITHUB"
+        # GitHub enmascara el valor, pero así ves que existe
+
+
       - name: Build Astro site
         run: pnpm run build
-      
+
       - name: Deploy to OVH via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: dist/
-          server-dir: www/
+          local-dir: dist
+          server-dir: www/  # folder where your site files go
