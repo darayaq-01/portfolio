@@ -5,6 +5,9 @@ on:
     branches:
       - main  # branch in production
 
+env:
+  TOKEN_GITHUB: ${{ secrets.PUBLIC_TOKEN_GITHUB }}
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -25,8 +28,6 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Astro site
-        env:
-          TOKEN_GITHUB: ${{ secrets.PUBLIC_TOKEN_GITHUB }}
         run: pnpm run build
 
       - name: Deploy to OVH via FTP
