@@ -3,43 +3,43 @@ name: Deploy to OVH via FTP
 on:
   push:
     branches:
-      - main  # branch in production
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
-    env:
-      PUBLIC_TOKEN_GITHUB: ${{ secrets.PUBLIC_TOKEN_GITHUB }}
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22  # o la versión que uses en tu proyecto
-
+          node-version: 22
+      
       - name: Install pnpm
         run: npm install -g pnpm
-
+      
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Check environment variable (debug)
-        run: echo "PUBLIC_TOKEN_GITHUB = $PUBLIC_TOKEN_GITHUB"
-        # GitHub enmascara el valor, pero así ves que existe
-
-
+      
+      # ✅ CREA el archivo .env con tus secrets
+      - name: Create .env file
+        run: |
+          echo "PUBLIC_TOKEN_GITHUB=${{ secrets.PUBLIC_TOKEN_GITHUB }}" >> .env
+          # Agrega aquí TODAS tus variables de entorno que necesites
+          # echo "PUBLIC_API_URL=${{ secrets.PUBLIC_API_URL }}" >> .env
+          # echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+      
       - name: Build Astro site
         run: pnpm run build
-
+      
       - name: Deploy to OVH via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: dist
-          server-dir: www/  # folder where your site files go
+          local-dir: dist/
+          server-dir: www/
