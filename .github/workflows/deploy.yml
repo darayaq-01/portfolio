@@ -24,11 +24,32 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       
-      # ✅ CREA el archivo .env con tus secrets
+      # Crear .env con el token
       - name: Create .env file
         run: |
-          echo "PUBLIC_TOKEN_GITHUB=${{ secrets.PUBLIC_TOKEN_GITHUB }}" >> .env
+          echo "PUBLIC_TOKEN_GITHUB=${{ secrets.PUBLIC_TOKEN_GITHUB }}" > .env
       
+      # Verificar que el token existe (mostrará solo los primeros caracteres)
+      - name: Verify token exists
+        run: |
+          if [ -z "${{ secrets.PUBLIC_TOKEN_GITHUB }}" ]; then
+            echo "❌ TOKEN IS EMPTY"
+            exit 1
+          else
+            echo "✅ Token exists (length: ${#{{ secrets.PUBLIC_TOKEN_GITHUB }}})"
+          fi
+      
+      # Verificar que se lee desde .env
+      - name: Check .env file
+        run: |
+          if [ -f .env ]; then
+            echo "✅ .env file exists"
+            # Mostrar solo primeros 10 caracteres por seguridad
+            head -c 10 .env
+            echo "..."
+          else
+            echo "❌ .env file not found"
+          fi
       
       - name: Build Astro site
         run: pnpm run build
