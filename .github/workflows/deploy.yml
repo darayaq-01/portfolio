@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Crear archivo .env con el token (sin PUBLIC_)
+      # Crear archivo .env con el token
       - name: Create .env file
         run: |
           echo "TOKEN_GITHUB=${{ secrets.TOKEN_GITHUB }}" > .env
@@ -38,5 +38,5 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: dist/
+          local-dir: dist/    
           server-dir: www/
