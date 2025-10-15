@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      PUBLIC_TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
 
     steps:
       - name: Checkout repository
