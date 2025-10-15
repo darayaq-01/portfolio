@@ -5,12 +5,12 @@ on:
     branches:
       - main  # branch in production
 
-env:
-  TOKEN_GITHUB: ${{ secrets.PUBLIC_TOKEN_GITHUB }}
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
+    env:
+      TOKEN_GITHUB: ${{ secrets.PUBLIC_TOKEN_GITHUB }}
 
     steps:
       - name: Checkout repository
