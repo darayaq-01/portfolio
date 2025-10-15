@@ -3,7 +3,6 @@ import { Image } from 'astro:assets';
 import { getProjectImages } from '../consts';
 
 const { title, projectName } = Astro.props.frontmatter;
-// console.log({ title, projectName });
 const portfolioImages = getProjectImages(projectName);
 ---
 
