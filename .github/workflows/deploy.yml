@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      TOKEN_GITHUB: ${{ secrets.PUBLIC_TOKEN_GITHUB }}
+      PUBLIC_TOKEN_GITHUB: ${{ secrets.PUBLIC_TOKEN_GITHUB }}
 
     steps:
       - name: Checkout repository
@@ -26,6 +26,11 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Check environment variable (debug)
+        run: echo "PUBLIC_TOKEN_GITHUB = $PUBLIC_TOKEN_GITHUB"
+        # GitHub enmascara el valor, pero así ves que existe
+
 
       - name: Build Astro site
         run: pnpm run build
