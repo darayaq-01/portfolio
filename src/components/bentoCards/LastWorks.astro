@@ -4,9 +4,9 @@ import CardTitle from '@components/ui/CardTitle.astro';
 import ProjectPreview from '@components/ProjectPreview.astro';
 import LinkBtn from '@components/ui/LinkBtn.astro';
 
-const featuredProjects = (await getCollection('projects')).filter(
-    ({ data }) => data.isFeatured
-);
+const featuredProjects = (await getCollection('projects'))
+    .filter(({ data }) => data.isFeatured)
+    .sort((a, b) => b.data.date - a.data.date);
 ---
 
 <div
@@ -15,14 +15,12 @@ const featuredProjects = (await getCollection('projects')).filter(
          shadow-[inset_0_10px_10px_-10px_rgba(0,0,0,0.25),inset_0_-10px_10px_-10px_rgba(0,0,0,0.25)]
          text-d-red md:col-start-3 md:row-span-2 md:aspect-auto md:h-full'
 >
-    <!-- Título fijo -->
     <div
         class='absolute top-0 left-0 right-0 z-20 px-10 pt-8 pb-4 bg-gradient-to-r from-[#c2b58b]/90 to-[#ebb06d]/90 backdrop-blur-sm md:px-4'
     >
         <CardTitle className=''> Experience </CardTitle>
     </div>
 
-    <!-- Contenedor con scroll -->
     <div
         id='scrollContainer'
         class='absolute inset-0 z-10 flex flex-col overflow-y-auto px-10 md:px-4 pt-24 md:pt-20 mb-4 transition-all duration-300'
@@ -41,19 +39,18 @@ const featuredProjects = (await getCollection('projects')).filter(
             }
         </ul>
 
-        <!-- Botón de descarga (no sticky) -->
+        <!-- Download CV Button (not sticky) -->
         <div class='mt-6 flex gap-2'>
             <LinkBtn
                 classText='md:text-xs sm:text-sm'
                 href='/docs/cv-daniel-araya.pdf'
                 text='Download CV'
-                ariaLabel='ir a la descarga'
+                ariaLabel='Download CV of Daniel Araya'
                 docDownload='cv-daniel-araya.pdf'
             />
         </div>
     </div>
 
-    <!-- Flecha scroll -->
     <button
         id='scrollArrow'
         onclick='toggleScroll()'
