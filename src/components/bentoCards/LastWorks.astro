@@ -4,19 +4,30 @@ import CardTitle from '@components/ui/CardTitle.astro';
 import ProjectPreview from '@components/ProjectPreview.astro';
 import LinkBtn from '@components/ui/LinkBtn.astro';
 
-const featuredProjects = (await getCollection('projects')).filter(
-    ({ data }) => data.isFeatured
-);
+const featuredProjects = (await getCollection('projects'))
+    .filter(({ data }) => data.isFeatured)
+    .sort((a, b) => b.data.date - a.data.date);
 ---
 
 <div
-    class='text-d-red group relative aspect-square h-fit w-full overflow-hidden rounded-md bg-gradient-to-r from-[#c2b58b] to-[#ebb06d] md:col-start-3 md:row-span-2 md:h-full'
+    class='relative w-full aspect-square overflow-hidden rounded-md
+         bg-gradient-to-r from-[#c2b58b] to-[#ebb06d]
+         shadow-[inset_0_10px_10px_-10px_rgba(0,0,0,0.25),inset_0_-10px_10px_-10px_rgba(0,0,0,0.25)]
+         text-d-red md:col-start-3 md:row-span-2 md:aspect-auto md:h-full'
 >
     <div
-        class='absolute inset-0 z-10 flex h-full flex-col items-start justify-start overflow-auto px-10 py-8 md:px-4'
+        class='absolute top-0 left-0 right-0 z-20 px-10 pt-8 pb-4 bg-gradient-to-r from-[#c2b58b]/90 to-[#ebb06d]/90 backdrop-blur-sm md:px-4'
     >
-        <CardTitle className='pb-4'> Works & Experience </CardTitle>
-        <ul class='w-full'>
+        <CardTitle className=''> Experience </CardTitle>
+    </div>
+
+    <div
+        id='scrollContainer'
+        class='absolute inset-0 z-10 flex flex-col overflow-y-auto px-10 md:px-4 pt-24 md:pt-20 mb-4 transition-all duration-300'
+        onscroll='handleScroll(event)'
+    >
+        <!-- Lista de proyectos -->
+        <ul class='w-full space-y-2'>
             {
                 !featuredProjects || featuredProjects.length === 0 ? (
                     <li class='text-center'>No projects found</li>
@@ -28,20 +39,119 @@ const featuredProjects = (await getCollection('projects')).filter(
             }
         </ul>
 
-        <div class='mt-auto flex gap-2'>
-            <!-- <LinkBtn
-                classText='md:text-xs sm:text-sm'
-                href={`/`}
-                text='Read CV'
-                ariaLabel='read online'
-            /> -->
+        <!-- Download CV Button (not sticky) -->
+        <div class='mt-6 flex gap-2'>
             <LinkBtn
                 classText='md:text-xs sm:text-sm'
                 href='/docs/cv-daniel-araya.pdf'
                 text='Download CV'
-                ariaLabel='ir a la descarga'
+                ariaLabel='Download CV of Daniel Araya'
                 docDownload='cv-daniel-araya.pdf'
             />
         </div>
     </div>
+
+    <button
+        id='scrollArrow'
+        onclick='toggleScroll()'
+        class='absolute bottom-3 right-4 z-20 rounded-full bg-black/40 p-2 text-white transition-all duration-200 hover:bg-black/60'
+    >
+        <!-- Flecha abajo -->
+        <svg
+            id='arrowDown'
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+            stroke-width='2'
+            stroke='currentColor'
+            class='h-5 w-5 opacity-100 transition-opacity duration-300'
+        >
+            <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                d='M19 9l-7 7-7-7'></path>
+        </svg>
+
+        <!-- Flecha arriba -->
+        <svg
+            id='arrowUp'
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+            stroke-width='2'
+            stroke='currentColor'
+            class='absolute inset-0 m-auto h-5 w-5 opacity-0 transition-opacity duration-300'
+        >
+            <path
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                d='M5 15l7-7 7 7'></path>
+        </svg>
+    </button>
+
+    <script is:inline>
+        const container = document.getElementById('scrollContainer');
+        const arrowBtn = document.getElementById('scrollArrow');
+        const arrowDown = document.getElementById('arrowDown');
+        const arrowUp = document.getElementById('arrowUp');
+
+        function handleScroll() {
+            const atBottom =
+                container.scrollHeight - container.scrollTop <=
+                container.clientHeight + 5;
+
+            // Fade entre flechas
+            if (atBottom) {
+                arrowDown.classList.replace('opacity-100', 'opacity-0');
+                arrowUp.classList.replace('opacity-0', 'opacity-100');
+            } else {
+                arrowDown.classList.replace('opacity-0', 'opacity-100');
+                arrowUp.classList.replace('opacity-100', 'opacity-0');
+            }
+        }
+
+        function toggleScroll() {
+            const scrollAmount = 200; // Cantidad de píxeles a avanzar/retroceder
+            const atBottom =
+                container.scrollHeight - container.scrollTop <=
+                container.clientHeight + 12;
+
+            if (atBottom) {
+                // Si está abajo, volver al inicio
+                container.scrollTo({
+                    top: 0,
+                    behavior: 'smooth',
+                });
+            } else {
+                // Si no está abajo, avanzar incrementalmente
+                container.scrollTo({
+                    top: container.scrollTop + scrollAmount,
+                    behavior: 'smooth',
+                });
+            }
+        }
+
+        function checkScrollable() {
+            const hasScroll = container.scrollHeight > container.clientHeight;
+            arrowBtn.style.display = hasScroll ? 'block' : 'none';
+        }
+
+        window.addEventListener('load', checkScrollable);
+        window.addEventListener('resize', checkScrollable);
+
+        // Estilos CSS para ocultar scrollbar en móviles/tablets
+        const style = document.createElement('style');
+        style.textContent = `
+    @media (max-width: 1024px) {
+        #scrollContainer {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        #scrollContainer::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+    }
+`;
+        document.head.appendChild(style);
+    </script>
 </div>
