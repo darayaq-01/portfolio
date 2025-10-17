@@ -6,19 +6,21 @@ const { title, subTitle, date, imageFront } = project.data;
 
 <a
     class:list={[
-        'flex justify-between hover:underline hover:underline-offset-4 hover:decoration-dashed hover:transition-all items-start  group w-full py-4',
+        'flex justify-between hover:underline hover:underline-offset-4 hover:decoration-dashed hover:transition-all items-start group w-full py-4',
         className,
     ]}
     href={`/projects/${project.id}/`}
 >
     <article class='flex w-full gap-2'>
-        <div class='flex gap-1'>
+        <div
+            class='flex gap-1 border-2 border-d-red rounded-xl overflow-auto h-fit'
+        >
             {
                 imageFront && (
                     <Image
                         src={imageFront}
                         alt={title}
-                        class='h-10 w-10 object-cover'
+                        class='h-12 w-12 object-cover'
                     />
                 )
             }
