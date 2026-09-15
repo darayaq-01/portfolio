@@ -15,7 +15,4 @@ export default defineConfig({
       priority: 0.5,
     }),
   ],
-  experimental: {
-    staticImportMetaEnv: true,
-  },
 });
