@@ -1,4 +1,7 @@
-ignoredBuiltDependencies:
-  - '@tailwindcss/oxide'
-  - esbuild
-  - sharp
+packages:
+  - '.'
+
+allowBuilds:
+  '@tailwindcss/oxide': true
+  esbuild: true
+  sharp: true
